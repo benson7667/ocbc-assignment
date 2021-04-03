@@ -1,8 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import storage from './utils/storage'
+import { generateRandomId } from '../src/utils/helper'
+
+const alice = {
+  uid: generateRandomId(),
+  name: 'Alice',
+  balance: 100
+}
+
+const bob = {
+  uid: generateRandomId(),
+  name: 'Bob',
+  balance: 80
+}
+
+
+function hasStorage() {
+  return storage.getCurrentLogin() && storage.getDebtRecords() && storage.getUsers()
+}
+
+function initializeData() {
+  if (!hasStorage()) {
+    console.log('Initializing default data...')
+    storage.setCurrentLogin(alice.uid) // TEMPORARY
+    storage.setUsers([alice, bob])
+    storage.setDebtRecords([
+      {
+        id: generateRandomId(),
+        from: {
+          uid: alice.uid,
+          name: alice.name
+        },
+        to: {
+          uid: bob.uid,
+          name: bob.name
+        },
+        amount: 100
+      }
+    ])
+  }
+}
+
+initializeData()
 
 ReactDOM.render(
   <React.StrictMode>
@@ -10,8 +51,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
