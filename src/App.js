@@ -1,13 +1,47 @@
-import { login } from './utils/operations'
+import { useState } from 'react';
+import { login, topup } from './utils/operations'
+import { getLoginClientUID } from './utils/client'
 
 function App() {
-  const handleLoginAlice = () => {
-    login('bob')
+  const [username, setUsername] = useState('')
+  const [recipient, setRecipient] = useState('')
+
+  const [payment, setPayment] = useState('')
+  const [topUpAmount, setTopUpAmount] = useState('')
+
+  const handleLogin = () => {
+    login(username).then(() => { })
+  }
+
+  const handleTopUp = () => {
+    const uid = getLoginClientUID()
+    topup(uid, topUpAmount).then(() => { })
   }
 
   return (
     <div className="App">
-      <button onClick={handleLoginAlice}>Login Alice</button>
+      <div style={{ marginBottom: 10 }}>
+        <input onChange={e => setUsername(e.target.value)} value={username} />
+        <button onClick={handleLogin}>Login</button>
+      </div>
+
+      <div style={{ marginBottom: 10 }}>
+        <div>
+          <span>{username} topup $ </span>
+          <input onChange={e => setTopUpAmount(Number(e.target.value))} value={topUpAmount} />
+          <button onClick={handleTopUp}>topup</button>
+        </div>
+      </div>
+
+      <div style={{ marginBottom: 10 }}>
+        <div>
+          <span>{username} pay $ </span>
+          <input onChange={e => setPayment(Number(e.target.value))} value={payment} />
+          <span> to </span>
+          <input onChange={e => setRecipient(e.target.value)} value={recipient} />
+          <button onClick={handleTopUp}>pay</button>
+        </div>
+      </div>
     </div>
   );
 }

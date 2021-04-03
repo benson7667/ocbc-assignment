@@ -7,12 +7,18 @@ import { generateRandomId } from '../src/utils/helper'
 const alice = {
   uid: generateRandomId(),
   name: 'Alice',
-  balance: 100
+  balance: 0
 }
 
 const bob = {
   uid: generateRandomId(),
   name: 'Bob',
+  balance: 80
+}
+
+const jane = {
+  uid: generateRandomId(),
+  name: 'Jane',
   balance: 80
 }
 
@@ -36,6 +42,18 @@ function initializeData() {
         to: {
           uid: bob.uid,
           name: bob.name
+        },
+        amount: 100
+      },
+      {
+        id: generateRandomId(),
+        from: {
+          uid: alice.uid,
+          name: alice.name
+        },
+        to: {
+          uid: jane.uid,
+          name: jane.name
         },
         amount: 100
       }

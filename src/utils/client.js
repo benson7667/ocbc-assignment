@@ -8,10 +8,8 @@ export function transformUserName(username) {
 
 export function isClientExist(username) {
     const usersList = storage.getUsers()
-    const foundList = usersList.filter(user => {
-        return transformUserName(user.name) === transformUserName(username)
-    })
-    return foundList.length > 0
+    if (!username) return false
+    return usersList.find(user => transformUserName(user.name) === transformUserName(username)) || false
 }
 
 export function setLoginClient(username) {
@@ -45,5 +43,18 @@ export function createClient(username) {
         balance: 0
     }
     storage.setUsers([...getAllClients(), client])
+}
+
+export function topUpClientBalance(uid, amount) {
+    const clientList = getAllClients()
+    const updatedList = clientList.map(client => {
+        if (client.uid === uid) {
+            return {
+                ...client,
+                balance: client.balance + amount
+            }
+        } else return client
+    })
+    storage.setUsers(updatedList)
 }
 

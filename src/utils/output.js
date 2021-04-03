@@ -1,3 +1,7 @@
+export const OUTPUT = {
+    LOGIN_REQUIRED: 'Please login first'
+}
+
 export function constructLoginOutputMsg(client, debtSummary) {
     const { debtFrom, debtTo } = debtSummary
     const debtMsg = []
@@ -30,3 +34,36 @@ export function constructLoginOutputMsg(client, debtSummary) {
         `Your balance is ${client.balance}`
     ]
 }
+
+export function constructTopUpOutputMsg(client, settlement, debtSummary) {
+    let messages = []
+
+    const settlementKeys = Object.keys(settlement)
+
+    // output transfer
+    if (settlementKeys.length) {
+        settlementKeys.forEach(key => {
+
+            const { transferTo: { name }, transferredAmount } = settlement[key]
+            const msg = `Transferred ${transferredAmount} to ${name}`
+            messages.push(msg)
+        })
+    }
+
+    // output balance
+    const balanceMsg = `Your balance is ${client.balance}`
+    messages.push(balanceMsg)
+
+
+    // output debtTo
+    const { debtFrom, debtTo } = debtSummary
+    if (debtTo.length || debtFrom.length) {
+        debtTo.forEach((info) => {
+            const msg = `Owing ${info.amount} to ${info.to.name}`
+            messages.push(msg)
+        })
+    }
+
+    return messages
+}
+
