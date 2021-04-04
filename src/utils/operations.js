@@ -76,8 +76,13 @@ export function pay(senderUID, recipientUID, amount) {
         }
 
         // 2. check if user is make transfer to herself
-        if (getLoginClientUID() === senderUID) {
+        if (getLoginClientUID() === recipientUID) {
             const message = OUTPUT.NO_SELF_PAYMENT
+            return resolve(message)
+        }
+
+        if (!getClientByUID(recipientUID)) {
+            const message = OUTPUT.USER_NOT_FOUND
             return resolve(message)
         }
 
