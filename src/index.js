@@ -13,13 +13,13 @@ const alice = {
 const bob = {
   uid: generateRandomId(),
   name: 'Bob',
-  balance: 80
+  balance: 0
 }
 
 const jane = {
   uid: generateRandomId(),
   name: 'Jane',
-  balance: 80
+  balance: 100
 }
 
 
@@ -31,32 +31,32 @@ function initializeData() {
   if (!hasStorage()) {
     console.log('Initializing default data...')
     storage.setCurrentLogin(alice.uid) // TEMPORARY
-    storage.setUsers([alice, bob])
+    storage.setUsers([alice, bob, jane])
     storage.setDebtRecords([
-      {
-        id: generateRandomId(),
-        from: {
-          uid: alice.uid,
-          name: alice.name
-        },
-        to: {
-          uid: bob.uid,
-          name: bob.name
-        },
-        amount: 100
-      },
-      {
-        id: generateRandomId(),
-        from: {
-          uid: alice.uid,
-          name: alice.name
-        },
-        to: {
-          uid: jane.uid,
-          name: jane.name
-        },
-        amount: 100
-      }
+      // {
+      //   id: generateRandomId(),
+      //   from: {
+      //     uid: bob.uid,
+      //     name: bob.name
+      //   },
+      //   to: {
+      //     uid: alice.uid,
+      //     name: alice.name
+      //   },
+      //   amount: 40
+      // },
+      // {
+      //   id: generateRandomId(),
+      //   from: {
+      //     uid: alice.uid,
+      //     name: alice.name
+      //   },
+      //   to: {
+      //     uid: jane.uid,
+      //     name: jane.name
+      //   },
+      //   amount: 100
+      // }
     ])
   }
 }

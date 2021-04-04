@@ -1,4 +1,6 @@
 import storage from '../utils/storage'
+import { getClientByUID, topUpClientBalance } from './client'
+import { generateRandomId } from '../utils/helper'
 
 export function getAllDebtsRecord() {
     return storage.getDebtRecords() || []
@@ -20,8 +22,48 @@ export function getMyDebtSummary(uid) {
     }
 }
 
+export function createDebtRecord(senderUID, recipientUID, oweAmount) {
+    const newDebtRecord = {
+        amount: oweAmount,
+        from: { uid: senderUID, name: getClientByUID(senderUID).name },
+        id: generateRandomId(),
+        to: { uid: recipientUID, name: getClientByUID(recipientUID).name }
+    }
+    storage.setDebtRecords([...getAllDebtsRecord(), newDebtRecord])
+}
+
 export function updateDebtRecords(debtRecords) {
     storage.setDebtRecords(debtRecords)
+}
+
+export function clearDebtRecords(debtID) {
+    const allDebtRecords = getAllDebtsRecord()
+    return allDebtRecords.filter(record => record.id !== debtID)
+}
+
+export function updateDebtAmount(debtId, amount, mode = 'increment') {
+    const allDebtRecords = getAllDebtsRecord()
+    return allDebtRecords.map(record => {
+        if (record.id === debtId) {
+            return {
+                ...record,
+                amount: mode === 'increment'
+                    ? record.amount + amount
+                    : record.amount - amount
+            }
+        }
+        return record
+    })
+}
+
+export function senderOweToRecipient(senderUID, recipientUID) {
+    const { debtTo } = getMyDebtSummary(senderUID)
+    return debtTo.find(debt => debt.to.uid === recipientUID)
+}
+
+export function recipientOweToSender(senderUID, recipientUID) {
+    const { debtFrom } = getMyDebtSummary(senderUID)
+    return debtFrom.find(debt => debt.from.uid === recipientUID)
 }
 
 export function processDebtSettlement(topUpAmount, debtTo) {
@@ -83,11 +125,20 @@ export function getUpdatedDebtRecords(allDebtRecords = [], settlement) {
 
         // exist inside settlement and settlement is remain unclear, update debtAmount
         if (settlement[record.id] && !settlement[record.id].isClear) {
+            const { transferTo: { uid }, transferredAmount } = settlement[record.id]
+
             const newDebtRecord = {
                 ...record,
-                amount: record.amount - settlement[record.id].transferredAmount
+                amount: record.amount - transferredAmount
             }
             result.push(newDebtRecord)
+            topUpClientBalance(uid, transferredAmount)
+        }
+
+        // clear settlement, credit amount to recipient balance
+        if (settlement[record.id] && settlement[record.id].isClear) {
+            const { transferTo: { uid }, transferredAmount } = settlement[record.id]
+            topUpClientBalance(uid, transferredAmount)
         }
     })
 

@@ -4,35 +4,55 @@ export const OUTPUT = {
 
 export function constructLoginOutputMsg(client, debtSummary) {
     const { debtFrom, debtTo } = debtSummary
+
+    const debtToMsg = []
+    const debtFromMsg = []
     const debtMsg = []
 
-    if (debtTo.length || debtFrom.length) {
-        debtTo.forEach((info) => {
-            const msg = `Owing ${info.amount} to ${info.to.name}`
-            debtMsg.push(msg)
-        })
+    debtTo.forEach((info) => {
+        const msg = `Owing ${info.amount} to ${info.to.name}`
+        debtToMsg.push(msg)
+    })
 
-        debtFrom.forEach((info) => {
-            const msg = `Owing ${info.amount} from ${info.from.name}`
-            debtMsg.push(msg)
-        })
-    }
+    debtFrom.forEach((info) => {
+        const msg = `Owing ${info.amount} from ${info.from.name}`
+        debtFromMsg.push(msg)
+    })
 
-    // no debtRecords
-    if (!debtMsg.length) {
+
+    // user has no debt records
+    if (!debtFromMsg.length && !debtToMsg.length) {
         return [
             `Hello, ${client.name}!`,
             `Your balance is ${client.balance}`
         ]
     }
 
+    // user has both debtTo and debtFrom record
+    if (debtFromMsg.length && debtToMsg.length) {
+        return [
+            `Hello, ${client.name}!`,
+            ...debtToMsg,
+            ...debtFromMsg,
+            `Your balance is ${client.balance}`
+        ]
+    }
 
-    // has debtRecords, output the debtRecords
-    return [
-        `Hello, ${client.name}!`,
-        ...debtMsg,
-        `Your balance is ${client.balance}`
-    ]
+    if (debtFromMsg.length) {
+        return [
+            `Hello, ${client.name}!`,
+            ...debtFromMsg,
+            `Your balance is ${client.balance}`,
+        ]
+    }
+
+    if (debtToMsg.length) {
+        return [
+            `Hello, ${client.name}!`,
+            `Your balance is ${client.balance}`,
+            ...debtToMsg
+        ]
+    }
 }
 
 export function constructTopUpOutputMsg(client, settlement, debtSummary) {
@@ -67,3 +87,57 @@ export function constructTopUpOutputMsg(client, settlement, debtSummary) {
     return messages
 }
 
+
+export function constructPaymentOutputMsg({ sender, recipient, payableAmount, unPayableAmount, debtSummary }) {
+    let messages = []
+
+    // output transfer
+    if (payableAmount > 0) {
+        messages.push(`Transferred ${payableAmount} to ${recipient.name}`)
+    }
+
+    // output oweFrom info
+    if (!payableAmount && !unPayableAmount) {
+        const { debtFrom } = debtSummary
+        debtFrom.forEach(info => {
+            const msg = `Owing ${info.amount} from ${info.from.name}`
+            messages.push(msg)
+        })
+    }
+
+    // output balance
+    messages.push(`Your balance is ${sender.balance}`)
+
+    // output oweTo info
+    if (unPayableAmount) {
+        const { debtTo } = debtSummary
+        debtTo.forEach((info) => {
+            const msg = `Owing ${info.amount} to ${info.to.name}`
+            messages.push(msg)
+        })
+    }
+
+
+    return messages
+
+}
+
+
+export function outputPaymentMessage(msgSequence) {
+
+}
+
+
+
+// OUTPUT REFACTOR
+
+export function message(type, args = {}) {
+    switch (type) {
+        case 'transfer':
+            let msg = 'Transferred ${amount} to ${recipientName}'
+            break
+
+        default:
+            break
+    }
+}

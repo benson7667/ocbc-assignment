@@ -58,3 +58,34 @@ export function topUpClientBalance(uid, amount) {
     storage.setUsers(updatedList)
 }
 
+export function deductClientBalance(uid, amount) {
+    const clientList = getAllClients()
+    const updatedList = clientList.map(client => {
+        if (client.uid === uid) {
+            return {
+                ...client,
+                balance: client.balance - amount
+            }
+        } else return client
+    })
+    storage.setUsers(updatedList)
+}
+
+export function getClientBalance(uid) {
+    return storage.getUsers().find(user => user.uid === uid).balance
+}
+
+// transaction
+export function getPayableAmount(balance, paymentAmount) {
+    if (balance >= paymentAmount) {
+        return {
+            payableAmount: paymentAmount,
+            unPayableAmount: 0
+        }
+    }
+
+    return {
+        payableAmount: balance,
+        unPayableAmount: paymentAmount - balance
+    }
+}

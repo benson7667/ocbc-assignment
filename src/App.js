@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { login, topup } from './utils/operations'
-import { getLoginClientUID } from './utils/client'
+import { login, topup, pay } from './utils/operations'
+import { getLoginClientUID, getClientUidByUsername } from './utils/client'
 
 function App() {
   const [username, setUsername] = useState('')
@@ -16,6 +16,13 @@ function App() {
   const handleTopUp = () => {
     const uid = getLoginClientUID()
     topup(uid, topUpAmount).then(() => { })
+  }
+
+
+  const handlePayment = () => {
+    const senderUID = getLoginClientUID()
+    const recipientUID = getClientUidByUsername(recipient)
+    pay(senderUID, recipientUID, payment).then(() => { })
   }
 
   return (
@@ -39,7 +46,7 @@ function App() {
           <input onChange={e => setPayment(Number(e.target.value))} value={payment} />
           <span> to </span>
           <input onChange={e => setRecipient(e.target.value)} value={recipient} />
-          <button onClick={handleTopUp}>pay</button>
+          <button onClick={handlePayment}>pay</button>
         </div>
       </div>
     </div>
