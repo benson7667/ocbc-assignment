@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+## Edge Case
+```
+CLICK RESET DATA FIRST
+> topup 100
+Please login first
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> pay alice 100
+Please login first
+```
 
-## Available Scripts
+## Edge Case
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-In the project directory, you can run:
+> pay bob 100
+Aborted. Recipient not found
+```
 
-### `npm start`
+## Edge Case
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> topup 100
+Your balance is 100
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> login bob
+Hello, bob!
+Your balance is 0
 
-### `npm test`
+> topup 100
+Your balance is 100
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> pay alice 150
+Transferred 100 to alice
+Your balance is 0
+Owing 50 to alice
 
-### `npm run build`
+> login alice
+Hello, alice!
+Owing 50 from bob
+Your balance is 200
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> pay bob 100
+Transferred 50 to bob
+Your balance is 150
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Edge Case
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> login bob
+Hello, bob!
+Your balance is 0
 
-### `npm run eject`
+> pay alice 100
+Your balance is 0
+Owing 100 to alice
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+> pay alice 100
+Your balance is 0
+Owing 200 to alice
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+> pay alice 100
+Your balance is 0
+Owing 300 to alice
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+> topup 1000
+Transferred 300 to alice
+Your balance is 700
+```
 
-## Learn More
+## Edge Case
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> topup 300
+Your balance is 300
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> login bob
+Hello, bob!
+Your balance is 0
 
-### Code Splitting
+> topup 300
+Your balance is 300
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+> pay alice 500
+Transferred 300 to alice
+Your balance is 0
+Owing 200 to alice
 
-### Analyzing the Bundle Size
+> login alice
+Hello, alice!
+Owing 200 from bob
+Your balance is 600
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> pay bob 500
+Transferred 300 to bob
+Your balance is 300
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> login bob
+Hello, bob!
+Your balance is 300
+```
