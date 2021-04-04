@@ -1,70 +1,268 @@
-# Getting Started with Create React App
+## Edge Test Case Given
+```
+> login Alice
+Hello, Alice!
+Your balance is 0.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> topup 100
+Your balance is 100.
 
-## Available Scripts
+> login Bob
+Hello, Bob!
+Your balance is 0.
 
-In the project directory, you can run:
+> topup 80
+Your balance is 80.
 
-### `npm start`
+> pay Alice 50
+Transferred 50 to Alice.
+Your balance is 30.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> pay Alice 100
+Transferred 30 to Alice.
+Your balance is 0.
+Owing 70 to Alice.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> topup 30
+Transferred 30 to Alice.
+Your balance is 0.
+Owing 40 to Alice.
 
-### `npm test`
+> login Alice
+Hello, Alice!
+Owing 40 from Bob.
+Your balance is 210.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> pay Bob 30
+Owing 10 from Bob.
+Your balance is 210.
 
-### `npm run build`
+> login Bob
+Hello, Bob!
+Your balance is 0.
+Owing 10 to Alice.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+> topup 100
+Transferred 10 to Alice.
+Your balance is 90.
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Edge Test Case #1
+```
+CLICK RESET DATA FIRST
+> topup 100
+Please login first
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> pay alice 100
+Please login first
+```
 
-### `npm run eject`
+## Edge Test Case #2
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+> pay bob 100
+Aborted. Recipient not found
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Edge Test Case #3
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+> topup 100
+Your balance is 100
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+> login bob
+Hello, bob!
+Your balance is 0
 
-## Learn More
+> topup 100
+Your balance is 100
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+> pay alice 150
+Transferred 100 to alice
+Your balance is 0
+Owing 50 to alice
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> login alice
+Hello, alice!
+Owing 50 from bob
+Your balance is 200
 
-### Code Splitting
+> pay bob 100
+Transferred 50 to bob
+Your balance is 150
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Edge Test Case #4
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-### Analyzing the Bundle Size
+> login bob
+Hello, bob!
+Your balance is 0
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> pay alice 100
+Your balance is 0
+Owing 100 to alice
 
-### Making a Progressive Web App
+> pay alice 100
+Your balance is 0
+Owing 200 to alice
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+> pay alice 100
+Your balance is 0
+Owing 300 to alice
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+> topup 1000
+Transferred 300 to alice
+Your balance is 700
+```
 
-### Deployment
+## Edge Test Case #5
+```
+> login alice
+Hello, alice!
+Your balance is 0
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+> topup 300
+Your balance is 300
 
-### `npm run build` fails to minify
+> login bob
+Hello, bob!
+Your balance is 0
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> topup 300
+Your balance is 300
+
+> pay alice 500
+Transferred 300 to alice
+Your balance is 0
+Owing 200 to alice
+
+> login alice
+Hello, alice!
+Owing 200 from bob
+Your balance is 600
+
+> pay bob 500
+Transferred 300 to bob
+Your balance is 300
+
+> login bob
+Hello, bob!
+Your balance is 300
+```
+
+## Edge Test Case #6
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> login amy
+Hello, amy!
+Your balance is 0
+
+> pay bob 100
+Your balance is 0
+Owing 100 to bob
+
+> pay alice 100
+Your balance is 0
+Owing 100 to bob
+Owing 100 to alice
+
+> topup 400
+Transferred 100 to bob
+Transferred 100 to alice
+Your balance is 200
+
+> login alice
+Hello, alice!
+Your balance is 100
+
+> login bob
+Hello, bob!
+Your balance is 100
+```
+
+## Edge Test Case #7
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> pay alice 100
+Transferred 100 to alice
+Your balance is 200
+
+> pay alice 100
+Transferred 100 to alice
+Your balance is 100
+
+> login alice
+Hello, alice!
+Your balance is 500
+
+> login bob
+Hello, bob!
+Your balance is 100
+```
+
+## Edge Test Case #8
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> pay alice 600
+Transferred 300 to alice
+Your balance is 0
+Owing 300 to alice
+
+> login alice
+Hello, alice!
+Owing 300 from bob
+Your balance is 600
+
+> pay bob 300
+Your balance is 600
+
+> login bob
+Hello, bob!
+Your balance is 0
+```
+
+
