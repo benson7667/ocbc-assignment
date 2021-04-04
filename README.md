@@ -1,3 +1,52 @@
+## Edge Test Case Given
+```
+> login Alice
+Hello, Alice!
+Your balance is 0.
+
+> topup 100
+Your balance is 100.
+
+> login Bob
+Hello, Bob!
+Your balance is 0.
+
+> topup 80
+Your balance is 80.
+
+> pay Alice 50
+Transferred 50 to Alice.
+Your balance is 30.
+
+> pay Alice 100
+Transferred 30 to Alice.
+Your balance is 0.
+Owing 70 to Alice.
+
+> topup 30
+Transferred 30 to Alice.
+Your balance is 0.
+Owing 40 to Alice.
+
+> login Alice
+Hello, Alice!
+Owing 40 from Bob.
+Your balance is 210.
+
+> pay Bob 30
+Owing 10 from Bob.
+Your balance is 210.
+
+> login Bob
+Hello, Bob!
+Your balance is 0.
+Owing 10 to Alice.
+
+> topup 100
+Transferred 10 to Alice.
+Your balance is 90.
+```
+
 ## Edge Test Case #1
 ```
 CLICK RESET DATA FIRST
@@ -181,3 +230,39 @@ Your balance is 500
 Hello, bob!
 Your balance is 100
 ```
+
+## Edge Test Case #8
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> pay alice 600
+Transferred 300 to alice
+Your balance is 0
+Owing 300 to alice
+
+> login alice
+Hello, alice!
+Owing 300 from bob
+Your balance is 600
+
+> pay bob 300
+Your balance is 600
+
+> login bob
+Hello, bob!
+Your balance is 0
+```
+
+
