@@ -1,12 +1,15 @@
+## Live Demo
+https://relaxed-golick-1f8f9b.netlify.app/
+
+## Assignment Instruction
+https://github.com/benson7667/ocbc-assignment/blob/master/INSTRUCTION.md
+
 ## Getting Started
 ```
 npm install
 npm start
 ```
-The application should start at `localhost:3000` by default
-
-## Live Demo
-https://relaxed-golick-1f8f9b.netlify.app/
+The application should start at `localhost:3000`
 
 ## Edge Test Case Given
 ```
