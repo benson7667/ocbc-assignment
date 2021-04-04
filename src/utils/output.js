@@ -9,7 +9,6 @@ export function constructLoginOutputMsg(client, debtSummary) {
 
     const debtToMsg = []
     const debtFromMsg = []
-    const debtMsg = []
 
     debtTo.forEach((info) => {
         const msg = `Owing ${info.amount} to ${info.to.name}`
@@ -122,24 +121,4 @@ export function constructPaymentOutputMsg({ sender, recipient, payableAmount, un
 
     return messages
 
-}
-
-
-export function outputPaymentMessage(msgSequence) {
-
-}
-
-
-
-// OUTPUT REFACTOR
-
-export function message(type, args = {}) {
-    switch (type) {
-        case 'transfer':
-            let msg = 'Transferred ${amount} to ${recipientName}'
-            break
-
-        default:
-            break
-    }
 }
