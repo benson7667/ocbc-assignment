@@ -278,4 +278,76 @@ Hello, bob!
 Your balance is 0
 ```
 
+## Edge Test Case #9
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> pay alice 900
+Transferred 300 to alice
+Your balance is 0
+Owing 600 to alice
+
+> login alice
+Hello, alice!
+Owing 600 from bob
+Your balance is 600
+
+> pay bob 600
+Your balance is 600
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> login alice
+Hello, alice!
+Your balance is 600
+```
+
+## Edge Test Case #10
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> topup 100
+Your balance is 100
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> topup 50
+Your balance is 50
+
+> pay alice 200
+Transferred 50 to alice
+Your balance is 0
+Owing 150 to alice
+
+> login alice
+Hello, alice!
+Owing 150 from bob
+Your balance is 150
+
+> pay bob 10
+Owing 140 from bob
+Your balance is 150
+
+> pay bob 290
+Transferred 150 to bob
+Your balance is 0
+```
 
