@@ -1,5 +1,6 @@
 export const OUTPUT = {
-    LOGIN_REQUIRED: 'Please login first'
+    LOGIN_REQUIRED: 'Please login first',
+    NO_SELF_PAYMENT: 'Aborted. You are unable to make payment to yourself'
 }
 
 export function constructLoginOutputMsg(client, debtSummary) {

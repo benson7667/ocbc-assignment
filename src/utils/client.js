@@ -33,7 +33,7 @@ export function getAllClients() {
 
 export function getClientByUID(uid) {
     const usersList = storage.getUsers()
-    return usersList.find(user => user.uid === uid) || {}
+    return usersList.find(user => user.uid === uid) || undefined
 }
 
 export function createClient(username) {

@@ -1,3 +1,5 @@
+import { validCommands } from '../constant/command'
+
 export function generateRandomId() {
     return Math.floor(Math.random() * 100000)
 }
@@ -5,4 +7,10 @@ export function generateRandomId() {
 export function formatOutputMessage(msg = []) {
     if (msg.length) return msg.join('\n')
     return ''
+}
+
+export function getTargetOperation(commandString) {
+    const targetCommand = validCommands.find(validCommand => validCommand.regex.test(commandString))
+    return targetCommand ? targetCommand.name : undefined
+
 }

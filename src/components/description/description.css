@@ -1,0 +1,13 @@
+.description-container {
+    border: 1px solid gray;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.spacing{
+    margin: 15px 20px;
+}
+
+.monostyle {
+    font-family: monospace;
+}

@@ -17,7 +17,15 @@ const storage = {
 
     // debt records
     setDebtRecords: (debtList) => storage.set(DEBT_RECORDS, JSON.stringify(debtList)),
-    getDebtRecords: () => JSON.parse(storage.get(DEBT_RECORDS))
+    getDebtRecords: () => JSON.parse(storage.get(DEBT_RECORDS)),
+
+    // resetData
+    initializeData: () => {
+        console.log('initialize with empty data...')
+        storage.setUsers([])
+        storage.setCurrentLogin('')
+        storage.setDebtRecords([])
+    },
 }
 
 export default storage

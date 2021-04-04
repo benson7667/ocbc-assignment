@@ -26,7 +26,7 @@ export function login(username) {
         console.log(formattedMessage)
 
         // always resolve, tentatively doesnt have promise rejection as unknow user will still login as new client
-        resolve({ output: formattedMessage })
+        resolve(formattedMessage)
     })
 }
 
@@ -34,6 +34,7 @@ export function topup(uid, topUpAmount) {
     return new Promise((resolve, reject) => {
         // 1. check if client has logged in
         const isClientLoggedIn = !!getClientByUID(uid)
+        console.log(isClientLoggedIn)
         if (!isClientLoggedIn) {
             const message = OUTPUT.LOGIN_REQUIRED
             return resolve(message)
@@ -74,12 +75,16 @@ export function pay(senderUID, recipientUID, amount) {
             return resolve(message)
         }
 
-
-        // TODO: CANNOT TRANSFER MONEY TO URSELF
+        // 2. check if user is make transfer to herself
+        if (getLoginClientUID() === senderUID) {
+            const message = OUTPUT.NO_SELF_PAYMENT
+            return resolve(message)
+        }
 
         const senderBalance = getClientBalance(senderUID)
+        let formattedMessage = ''
 
-        // 2. check if sender owe recipient, increase the debt without making transfer
+        // 3. check if sender owe recipient, increase the debt without making transfer
         const oweToRecipient = senderOweToRecipient(senderUID, recipientUID)
         if (oweToRecipient) {
             const { id } = oweToRecipient
@@ -93,11 +98,11 @@ export function pay(senderUID, recipientUID, amount) {
             const debtSummary = getMyDebtSummary(senderUID)
             const messages = constructPaymentOutputMsg({ sender, recipient, unPayableAmount, debtSummary })
 
-            const formattedMessage = formatOutputMessage(messages)
+            formattedMessage = formatOutputMessage(messages)
             console.log(formattedMessage)
         }
 
-        // 3. check if recipient owe sender, 
+        // 4. check if recipient owe sender, 
         const oweToSender = recipientOweToSender(senderUID, recipientUID)
         if (oweToSender) {
             const { id, amount: oweAmount } = oweToSender
@@ -112,7 +117,7 @@ export function pay(senderUID, recipientUID, amount) {
                 const recipient = getClientByUID(recipientUID)
                 const debtSummary = getMyDebtSummary(senderUID)
                 const messages = constructPaymentOutputMsg({ sender, recipient, debtSummary })
-                const formattedMessage = formatOutputMessage(messages)
+                formattedMessage = formatOutputMessage(messages)
                 console.log(formattedMessage)
 
             }
@@ -131,7 +136,7 @@ export function pay(senderUID, recipientUID, amount) {
                 const recipient = getClientByUID(recipientUID)
                 const debtSummary = getMyDebtSummary(senderUID)
                 const messages = constructPaymentOutputMsg({ sender, recipient, payableAmount, debtSummary })
-                const formattedMessage = formatOutputMessage(messages)
+                formattedMessage = formatOutputMessage(messages)
                 console.log(formattedMessage)
             }
 
@@ -151,12 +156,12 @@ export function pay(senderUID, recipientUID, amount) {
                 const recipient = getClientByUID(recipientUID)
                 const debtSummary = getMyDebtSummary(senderUID)
                 const messages = constructPaymentOutputMsg({ sender, recipient, payableAmount, debtSummary })
-                const formattedMessage = formatOutputMessage(messages)
+                formattedMessage = formatOutputMessage(messages)
                 console.log(formattedMessage)
             }
         }
 
-        // 4. check if both sender recipient not owe each other
+        // 5. check if both sender recipient not owe each other
         if (!oweToSender && !oweToRecipient) {
             // const senderBalance = getClientBalance(senderUID)
             const { payableAmount, unPayableAmount } = getPayableAmount(senderBalance, amount)
@@ -177,11 +182,11 @@ export function pay(senderUID, recipientUID, amount) {
             const recipient = getClientByUID(recipientUID)
             const debtSummary = getMyDebtSummary(senderUID)
             const messages = constructPaymentOutputMsg({ sender, recipient, payableAmount, unPayableAmount, debtSummary })
-            const formattedMessage = formatOutputMessage(messages)
+            formattedMessage = formatOutputMessage(messages)
 
             console.log(formattedMessage)
         }
 
-        resolve()
+        resolve(formattedMessage)
     })
 }
