@@ -148,21 +148,36 @@ export function pay(senderUID, recipientUID, amount) {
             // clear the debt and invert the debt
             if (amount >= oweAmount && amount > senderBalance) {
                 console.log('amount >= oweAmount && amount > senderBalance')
-                const payableAmount = senderBalance
+                const payableAmount = amount - oweAmount
                 const updatedDebtRecord = clearDebtRecords(id)
                 updateDebtRecords(updatedDebtRecord)
-                createDebtRecord(senderUID, recipientUID, amount - oweAmount - payableAmount)
+                if (payableAmount > senderBalance) {
+                    createDebtRecord(senderUID, recipientUID, payableAmount - senderBalance)
+                    topUpClientBalance(recipientUID, senderBalance)
+                    deductClientBalance(senderUID, senderBalance)
 
-                topUpClientBalance(recipientUID, payableAmount)
-                deductClientBalance(senderUID, payableAmount)
+                    // output the message
+                    const sender = getClientByUID(senderUID)
+                    const recipient = getClientByUID(recipientUID)
+                    const debtSummary = getMyDebtSummary(senderUID)
+                    const messages = constructPaymentOutputMsg({ sender, recipient, payableAmount: senderBalance, debtSummary })
+                    formattedMessage = formatOutputMessage(messages)
+                    console.log(formattedMessage)
+                } else {
+                    topUpClientBalance(recipientUID, payableAmount)
+                    deductClientBalance(senderUID, payableAmount)
 
-                // output the message
-                const sender = getClientByUID(senderUID)
-                const recipient = getClientByUID(recipientUID)
-                const debtSummary = getMyDebtSummary(senderUID)
-                const messages = constructPaymentOutputMsg({ sender, recipient, payableAmount, debtSummary })
-                formattedMessage = formatOutputMessage(messages)
-                console.log(formattedMessage)
+                    // output the message
+                    const sender = getClientByUID(senderUID)
+                    const recipient = getClientByUID(recipientUID)
+                    const debtSummary = getMyDebtSummary(senderUID)
+                    const messages = constructPaymentOutputMsg({ sender, recipient, payableAmount, debtSummary })
+                    formattedMessage = formatOutputMessage(messages)
+                    console.log(formattedMessage)
+                }
+
+
+
             }
         }
 
