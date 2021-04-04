@@ -1,3 +1,13 @@
+## Getting Started
+```
+npm install
+npm start
+```
+The application should start at `localhost:3000` by default
+
+## Live Demo
+https://relaxed-golick-1f8f9b.netlify.app/
+
 ## Edge Test Case Given
 ```
 > login Alice
