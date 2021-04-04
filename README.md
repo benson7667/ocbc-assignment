@@ -1,4 +1,4 @@
-## Edge Case
+## Edge Test Case #1
 ```
 CLICK RESET DATA FIRST
 > topup 100
@@ -8,7 +8,7 @@ Please login first
 Please login first
 ```
 
-## Edge Case
+## Edge Test Case #2
 ```
 > login alice
 Hello, alice!
@@ -18,7 +18,7 @@ Your balance is 0
 Aborted. Recipient not found
 ```
 
-## Edge Case
+## Edge Test Case #3
 ```
 > login alice
 Hello, alice!
@@ -49,7 +49,7 @@ Transferred 50 to bob
 Your balance is 150
 ```
 
-## Edge Case
+## Edge Test Case #4
 ```
 > login alice
 Hello, alice!
@@ -77,7 +77,7 @@ Transferred 300 to alice
 Your balance is 700
 ```
 
-## Edge Case
+## Edge Test Case #5
 ```
 > login alice
 Hello, alice!
@@ -110,4 +110,74 @@ Your balance is 300
 > login bob
 Hello, bob!
 Your balance is 300
+```
+
+## Edge Test Case #6
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> login amy
+Hello, amy!
+Your balance is 0
+
+> pay bob 100
+Your balance is 0
+Owing 100 to bob
+
+> pay alice 100
+Your balance is 0
+Owing 100 to bob
+Owing 100 to alice
+
+> topup 400
+Transferred 100 to bob
+Transferred 100 to alice
+Your balance is 200
+
+> login alice
+Hello, alice!
+Your balance is 100
+
+> login bob
+Hello, bob!
+Your balance is 100
+```
+
+## Edge Test Case #7
+```
+> login alice
+Hello, alice!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> login bob
+Hello, bob!
+Your balance is 0
+
+> topup 300
+Your balance is 300
+
+> pay alice 100
+Transferred 100 to alice
+Your balance is 200
+
+> pay alice 100
+Transferred 100 to alice
+Your balance is 100
+
+> login alice
+Hello, alice!
+Your balance is 500
+
+> login bob
+Hello, bob!
+Your balance is 100
 ```
